@@ -2,7 +2,7 @@
  * @author OKOK
  * @desc 错误处理工具
  */
-const { AUTH_CODE, UPLOAD_CODE, VERTIY_CODE, NOFOUND_CODE, COMMON_CODE } = require('./resCode')
+const { AUTH_CODE, UPLOAD_CODE, VERTIY_CODE, NOFOUND_CODE, COMMON_ERROR_CODE } = require('./resCode')
 
 
 // 业务处理错误基类
@@ -57,6 +57,6 @@ exports.NotFoundError = class extends ServiceError {
 // 未知错误
 exports.UnknownError = class extends ServiceError {
   constructor() {
-    super("server internal error", COMMON_CODE);
+    super("server internal error", COMMON_ERROR_CODE);
   }
 }
