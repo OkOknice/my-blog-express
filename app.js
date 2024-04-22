@@ -47,8 +47,10 @@ app.use(jwt({
 // 引入路由
 const adminRouter = require('./routes/admin')
 const captchaRouter = require('./routes/captcha')
+const bannerRouter = require('./routes/banner')
 // 使用路由中间件
 app.use('/api/admin', adminRouter)
+app.use('/api/banner', bannerRouter)
 app.use('/res', captchaRouter)
 
 
