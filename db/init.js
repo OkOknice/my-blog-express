@@ -3,6 +3,10 @@ const adminModel = require('./model/adminModel')
 const bannerModel = require(('./model/bannerModel'))
 const md5 = require('md5')
 
+require('./model/fileModel')
+require('./model/blogTypeModel')
+
+
 Sequelize.sync(
   {
     alter: true

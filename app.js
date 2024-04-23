@@ -8,7 +8,8 @@ const md5 = require('md5')
 const session = require("express-session");
 
 const { resultHandle } = require('./utils/resultHandle')
-const { ForbiddenError } = require('./utils/errorHandle')
+const { ForbiddenError, UnknownError } = require('./utils/errorHandle')
+
 
 require('dotenv').config()
 require('express-async-errors')
@@ -48,10 +49,16 @@ app.use(jwt({
 const adminRouter = require('./routes/admin')
 const captchaRouter = require('./routes/captcha')
 const bannerRouter = require('./routes/banner')
+const uploadRouter = require('./routes/upload')
+const blogTypeRouter = require('./routes/blogType')
+
 // 使用路由中间件
 app.use('/api/admin', adminRouter)
 app.use('/api/banner', bannerRouter)
+app.use('/api/upload', uploadRouter)
+app.use('/api/blogType', blogTypeRouter)
 app.use('/res', captchaRouter)
+
 
 
 // catch 404 and forward to error handler
@@ -61,8 +68,11 @@ app.use(function(req, res, next) {
 
 // 错误处理
 app.use(function(err, req, res, next) {
-  if(['No authorization token was found', 'invalid token'].includes(err.message)) {
+  if(['No authorization token was found', 'invalid token', 'invalid_token'].includes(err.message) || err.code === 'invalid_token') {
     res.send(new ForbiddenError('未登录，或者登录已经过期').handleResult())
+  }
+  if(!err.code) {
+    res.send(new UnknownError().handleResult())
   }
   res.send(resultHandle( err.code,null, err.message))
 });
